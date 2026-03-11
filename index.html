@@ -10,7 +10,7 @@
             --panel-bg: #1e1e1e;
             --text-main: #ffffff;
             --text-muted: #a0a0a0;
-            --accent: #00e676; /* Verde Balanz/BYMA */
+            --accent: #00e676; 
             --danger: #ff5252;
             --border: #333;
         }
@@ -23,82 +23,22 @@
             display: flex;
             justify-content: center;
         }
-        .container {
-            max-width: 800px;
-            width: 100%;
-        }
-        h1, h2, h3 {
-            color: var(--accent);
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        p.subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        .card {
-            background-color: var(--panel-bg);
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 0.9em;
-            color: var(--text-muted);
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            background-color: #2a2a2a;
-            border: 1px solid var(--border);
-            color: white;
-            border-radius: 5px;
-            font-size: 1em;
-            box-sizing: border-box;
-        }
-        input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        .result-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 1.1em;
-        }
-        .result-row:last-child {
-            border-bottom: none;
-        }
-        .total-box {
-            background-color: rgba(0, 230, 118, 0.1);
-            border: 1px solid var(--accent);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: 20px;
-        }
-        .total-box h2 {
-            margin: 0;
-            font-size: 2.5em;
-        }
+        .container { max-width: 800px; width: 100%; }
+        h1, h2, h3 { color: var(--accent); text-align: center; margin-bottom: 5px; }
+        p.subtitle { text-align: center; color: var(--text-muted); margin-bottom: 30px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background-color: var(--panel-bg); padding: 20px; border-radius: 10px; border: 1px solid var(--border); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-size: 0.9em; color: var(--text-muted); }
+        input { width: 100%; padding: 10px; background-color: #2a2a2a; border: 1px solid var(--border); color: white; border-radius: 5px; box-sizing: border-box; color-scheme: dark; }
+        input:focus { outline: none; border-color: var(--accent); }
+        .result-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 1.1em; }
+        .result-row:last-child { border-bottom: none; }
+        .total-box { background-color: rgba(0, 230, 118, 0.1); border: 1px solid var(--accent); padding: 20px; border-radius: 10px; text-align: center; margin-top: 20px; }
+        .total-box h2 { margin: 0; font-size: 2.5em; }
         .positive { color: var(--accent); }
         .negative { color: var(--danger); }
-        
-        @media (max-width: 600px) {
-            .grid { grid-template-columns: 1fr; }
-        }
+        @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -110,94 +50,97 @@
     <div class="grid">
         <div class="card">
             <h3>1. Datos de la Operación</h3>
-            
-            <div class="form-group">
-                <label>Cantidad de Lotes GGAL (1 Lote = 100 accs):</label>
-                <input type="number" id="lotes" value="44" oninput="calcular()">
-            </div>
-            
+            <div class="form-group"><label>Cantidad de Lotes GGAL:</label><input type="number" id="lotes" value="44" oninput="calcular()"></div>
             <hr style="border-color: #333; margin: 20px 0;">
             <label style="color:var(--accent)">--- Historia de Abril ---</label>
-            
-            <div class="form-group">
-                <label>Primas ya cobradas (Roll Down) [$]:</label>
-                <input type="number" id="primasAbril" value="700000" oninput="calcular()">
-            </div>
-            <div class="form-group">
-                <label>Costo de cerrar Abril hoy (Buy-Back) [$]:</label>
-                <input type="number" id="costoAbril" value="350000" oninput="calcular()">
-            </div>
-
+            <div class="form-group"><label>Primas ya cobradas (Roll Down) [$]:</label><input type="number" id="primasAbril" value="700000" oninput="calcular()"></div>
+            <div class="form-group"><label>Costo de cerrar Abril hoy [$]:</label><input type="number" id="costoAbril" value="350000" oninput="calcular()"></div>
             <hr style="border-color: #333; margin: 20px 0;">
             <label style="color:var(--accent)">--- Salto a Junio ---</label>
-
-            <div class="form-group">
-                <label>Prima nueva a cobrar por Call (ej: Base 7200) [$ por acción]:</label>
-                <input type="number" id="primaCallJunio" value="700" oninput="calcular()">
-            </div>
-            <div class="form-group">
-                <label>Días hasta el vencimiento (ej: 101 días):</label>
-                <input type="number" id="diasVencimiento" value="101" oninput="calcular()">
-            </div>
-            <div class="form-group">
-                <label>Tasa Money Market Balanz (TNA %):</label>
-                <input type="number" id="tasaMM" value="23" oninput="calcular()">
-            </div>
+            <div class="form-group"><label>Prima nueva Call Junio [$ por acción]:</label><input type="number" id="primaCallJunio" value="700" oninput="calcular()"></div>
+            
+            <div class="form-group"><label>Fecha de Vencimiento (BYMA):</label><input type="date" id="fechaVencimiento" oninput="calcular()"></div>
+            
+            <div class="form-group"><label>Tasa Money Market Balanz (TNA %):</label><input type="number" id="tasaMM" value="23" oninput="calcular()"></div>
         </div>
 
         <div class="card">
             <h3>2. Resultados Proyectados</h3>
-            
-            <div class="result-row">
-                <span>Neto de Abril (Cobradas - Costo):</span>
-                <strong id="outNetoAbril">$0</strong>
-            </div>
-            
-            <div class="result-row">
-                <span>Ingreso Call Junio:</span>
-                <strong id="outIngresoJunio" class="positive">$0</strong>
-            </div>
-            
-            <div class="result-row">
-                <span>Flujo de Caja Total a Invertir:</span>
-                <strong id="outFlujoCaja">$0</strong>
-            </div>
-
-            <div class="result-row">
-                <span>Interés Money Market (por <span id="outDias">0</span> días):</span>
-                <strong id="outInteresMM" class="positive">$0</strong>
-            </div>
-
+            <div class="result-row"><span>Neto de Abril (Cobradas - Costo):</span><strong id="outNetoAbril">$0</strong></div>
+            <div class="result-row"><span>Ingreso Call Junio:</span><strong id="outIngresoJunio" class="positive">$0</strong></div>
+            <div class="result-row"><span>Flujo de Caja Total a Invertir:</span><strong id="outFlujoCaja">$0</strong></div>
+            <div class="result-row"><span>Interés MM (por <span id="outDias">0</span> días):</span><strong id="outInteresMM" class="positive">$0</strong></div>
             <div class="total-box">
-                <span style="color: var(--text-muted);">Ganancia Neta Total Esperada (Solo Primas + MM)</span>
+                <span style="color: var(--text-muted);">Ganancia Neta Total Esperada</span>
                 <h2 id="outTotalFinal" class="positive">$0</h2>
-                <p style="margin-top: 10px; font-size: 0.9em; color: #a0a0a0;">*Esto no incluye la ganancia por la suba del valor de tus acciones de GGAL.</p>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #a0a0a0;">*No incluye la valorización del capital en acciones GGAL.</p>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    const inputsData = ['lotes', 'primasAbril', 'costoAbril', 'primaCallJunio', 'fechaVencimiento', 'tasaMM'];
+
     function formatearMoneda(valor) {
         return "$" + valor.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
     }
 
+    // Configurar fecha por defecto (Tercer viernes de Junio) si está vacío
+    function setearFechaPorDefecto() {
+        let inputFecha = document.getElementById('fechaVencimiento');
+        if (!inputFecha.value) {
+            // Ejemplo: 19 de Junio de 2026
+            inputFecha.value = "2026-06-19"; 
+        }
+    }
+
+    function cargarDatos() {
+        inputsData.forEach(id => {
+            if(localStorage.getItem(id) !== null) {
+                document.getElementById(id).value = localStorage.getItem(id);
+            }
+        });
+        if (!document.getElementById('fechaVencimiento').value) {
+            setearFechaPorDefecto();
+        }
+    }
+
+    function guardarDatos() {
+        inputsData.forEach(id => {
+            localStorage.setItem(id, document.getElementById(id).value);
+        });
+    }
+
+    function calcularDiasRestantes(fechaVencimientoStr) {
+        if (!fechaVencimientoStr) return 0;
+        
+        // Crear fechas asegurando que comparemos días enteros
+        let fechaVenc = new Date(fechaVencimientoStr + 'T00:00:00'); 
+        let hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        let diferenciaMs = fechaVenc.getTime() - hoy.getTime();
+        let dias = Math.ceil(diferenciaMs / (1000 * 60 * 60 * 24));
+        
+        return dias > 0 ? dias : 0; // Si la fecha ya pasó, devuelve 0
+    }
+
     function calcular() {
-        // Obtener valores de los inputs
         let lotes = parseFloat(document.getElementById('lotes').value) || 0;
         let primasAbril = parseFloat(document.getElementById('primasAbril').value) || 0;
         let costoAbril = parseFloat(document.getElementById('costoAbril').value) || 0;
         let primaCallJunio = parseFloat(document.getElementById('primaCallJunio').value) || 0;
-        let dias = parseFloat(document.getElementById('diasVencimiento').value) || 0;
+        let fechaVencimiento = document.getElementById('fechaVencimiento').value;
         let tasaMM = parseFloat(document.getElementById('tasaMM').value) || 0;
 
-        // Cálculos
+        let dias = calcularDiasRestantes(fechaVencimiento);
+
         let acciones = lotes * 100;
         let netoAbril = primasAbril - costoAbril;
         let ingresoJunio = acciones * primaCallJunio;
         let flujoCaja = netoAbril + ingresoJunio;
         
-        // El interés MM aplica sobre el flujo de caja neto que queda en la cuenta
         let interesMM = 0;
         if (flujoCaja > 0) {
             interesMM = flujoCaja * (tasaMM / 100) * (dias / 365);
@@ -205,26 +148,24 @@
 
         let totalFinal = flujoCaja + interesMM;
 
-        // Actualizar UI
-        let uiNetoAbril = document.getElementById('outNetoAbril');
-        uiNetoAbril.innerText = formatearMoneda(netoAbril);
-        uiNetoAbril.className = netoAbril >= 0 ? 'positive' : 'negative';
+        document.getElementById('outNetoAbril').innerText = formatearMoneda(netoAbril);
+        document.getElementById('outNetoAbril').className = netoAbril >= 0 ? 'positive' : 'negative';
 
         document.getElementById('outIngresoJunio').innerText = formatearMoneda(ingresoJunio);
         
-        let uiFlujo = document.getElementById('outFlujoCaja');
-        uiFlujo.innerText = formatearMoneda(flujoCaja);
-        uiFlujo.className = flujoCaja >= 0 ? 'positive' : 'negative';
+        document.getElementById('outFlujoCaja').innerText = formatearMoneda(flujoCaja);
+        document.getElementById('outFlujoCaja').className = flujoCaja >= 0 ? 'positive' : 'negative';
 
         document.getElementById('outDias').innerText = dias;
         document.getElementById('outInteresMM').innerText = formatearMoneda(interesMM);
         
-        let uiTotal = document.getElementById('outTotalFinal');
-        uiTotal.innerText = formatearMoneda(totalFinal);
-        uiTotal.className = totalFinal >= 0 ? 'positive' : 'negative';
+        document.getElementById('outTotalFinal').innerText = formatearMoneda(totalFinal);
+        document.getElementById('outTotalFinal').className = totalFinal >= 0 ? 'positive' : 'negative';
+
+        guardarDatos();
     }
 
-    // Calcular al iniciar
+    cargarDatos();
     calcular();
 </script>
 
