@@ -894,19 +894,13 @@
 
     <div class="login-form-group">
       <label>Usuario</label>
-      <input type="text" id="login-user" placeholder="Ingrese su usuario" autocomplete="username" onkeydown="if(event.key==='Enter') document.getElementById('login-pass').focus()">
-    </div>
-
-    <div class="login-form-group">
-      <label>Contraseña</label>
-      <input type="password" id="login-pass" placeholder="Ingrese su contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter') doLogin()">
+      <input type="text" id="login-user" placeholder="Tu nombre o usuario" autocomplete="username" onkeydown="if(event.key==='Enter') doLogin()">
     </div>
 
     <button class="login-btn" onclick="doLogin()">Ingresar al Sistema</button>
 
-    <div class="login-error" id="login-error">Usuario o contraseña incorrectos</div>
+    <p class="login-hint">© Planetaria · Sistema de Ventas</p>
 
-    <p class="login-hint">© Planetaria · Acceso restringido</p>
   </div>
 </div>
 
@@ -1759,37 +1753,16 @@ function saveCredentials(creds) {
 var currentUser = null;
 
 function doLogin() {
-  try {
-    var userEl = document.getElementById('login-user');
-    var passEl = document.getElementById('login-pass');
-    var errEl  = document.getElementById('login-error');
-    var screenEl = document.getElementById('login-screen');
-
-    if (!userEl || !passEl) return;
-
-    var user = userEl.value.trim();
-    var pass = passEl.value;
-    var creds = getCredentials();
-
-    if (user === creds.user && pass === creds.pass) {
-      currentUser = user;
-      try { sessionStorage.setItem('planetaria_session', user); } catch(e) {}
-      screenEl.style.display = 'none';
-      var avEl = document.getElementById('sidebarAvatar');
-      var usEl = document.getElementById('sidebarUser');
-      if (avEl) avEl.textContent = user.slice(0,2).toUpperCase();
-      if (usEl) usEl.textContent = user;
-      showAlert('Bienvenido, ' + user + ' \uD83D\uDC4B', 'success');
-    } else {
-      passEl.value = '';
-      if (errEl) {
-        errEl.style.display = 'block';
-        setTimeout(function() { errEl.style.display = 'none'; }, 3000);
-      }
-    }
-  } catch(e) {
-    alert('Error al iniciar sesión: ' + e.message);
-  }
+  var screenEl = document.getElementById("login-screen");
+  var userEl = document.getElementById("login-user");
+  var user = (userEl && userEl.value.trim()) ? userEl.value.trim() : "Admin";
+  currentUser = user;
+  screenEl.style.display = "none";
+  var avEl = document.getElementById("sidebarAvatar");
+  var usEl = document.getElementById("sidebarUser");
+  if (avEl) avEl.textContent = user.slice(0,2).toUpperCase();
+  if (usEl) usEl.textContent = user;
+  showAlert("Bienvenido " + user + "!", "success");
 }
 
 function doLogout() {
@@ -1797,7 +1770,6 @@ function doLogout() {
   currentUser = null;
   try { sessionStorage.removeItem('planetaria_session'); } catch(e) {}
   document.getElementById('login-user').value = '';
-  document.getElementById('login-pass').value = '';
   document.getElementById('login-screen').style.display = 'flex';
 }
 
@@ -2648,4 +2620,28 @@ function updateConfigStats() {
   document.getElementById('cfg-cnt-prod').textContent = db.productos.length;
   document.getElementById('cfg-cnt-cli').textContent = db.clientes.length;
   document.getElementById('cfg-cnt-ven').textContent = db.ventas.length;
-  if (currentUser) document.getElementById('cfg-user-activo').textContent = curren
+  if (currentUser) document.getElementById('cfg-user-activo').textContent = currentUser;
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(db, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'planetaria_datos_' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+}
+
+function clearAll() {
+  const cfgBackup = {...db.config};
+  db = { categorias:[], productos:[], clientes:[], proveedores:[], empleados:[], ventas:[], config: cfgBackup };
+  save(); refreshAll();
+  showAlert('Datos eliminados', 'success');
+}
+
+// ==================== SELECTS ====================
+function loadSelects() {
+  loadCatSelect(); loadProvSelect();
+  const invSel = document.getElementById('inv-prod');
+  invSel.innerHTML = db.productos.map(p => `<option value="${p.id}">${p.nombre}</option>`).join('');
+  const cliSel = document.getElementById('cartClient');
+  cliSel.innerHTML = '<option value="">— Cliente general —</option>' + db.clientes.map(c => `<option value="${c.id}">${c.nombre}</option>`).join(
